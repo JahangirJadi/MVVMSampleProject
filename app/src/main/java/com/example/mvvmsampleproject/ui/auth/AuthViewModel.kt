@@ -3,6 +3,7 @@ package com.example.mvvmsampleproject.ui.auth
 import android.view.View
 import androidx.lifecycle.ViewModel
 import com.example.mvvmsampleproject.data.repositories.UserRepository
+import com.example.mvvmsampleproject.utils.APIException
 import com.example.mvvmsampleproject.utils.Coroutines
 
 class AuthViewModel : ViewModel() {
@@ -19,11 +20,15 @@ class AuthViewModel : ViewModel() {
         }
 
         Coroutines.main {
-            val response = UserRepository().userLogin(email!!, password!!)
-            if (response.isSuccessful) {
-                listener?.onSuccess(response.body()?.user)
-            } else {
-                listener?.onFailure("Error code: ${response.code()}")
+            try {
+                val response = UserRepository().userLogin(email!!, password!!)
+                response.user.let {
+                    listener?.onSuccess(it)
+                    return@main
+                }
+                listener?.onFailure(response.message!!)
+            } catch (e: APIException) {
+                listener?.onFailure(e.message!!)
             }
         }
 

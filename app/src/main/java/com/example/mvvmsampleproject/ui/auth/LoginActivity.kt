@@ -14,6 +14,7 @@ import com.example.mvvmsampleproject.data.network.Response.AuthResponse
 import com.example.mvvmsampleproject.databinding.ActivityLoginBinding
 import com.example.mvvmsampleproject.utils.hide
 import com.example.mvvmsampleproject.utils.show
+import com.example.mvvmsampleproject.utils.snackbar
 import com.example.mvvmsampleproject.utils.toast
 
 class LoginActivity : AppCompatActivity(), AuthListener {
@@ -29,17 +30,18 @@ class LoginActivity : AppCompatActivity(), AuthListener {
 
     override fun onStarted() {
 
-       binding.progressBar.show()
+        binding.progressBar.show()
 
     }
 
-    override fun onSuccess(user:User?) {
+    override fun onSuccess(user: User?) {
         binding.progressBar.hide()
-        toast("${user?.name} is logged in")
+        binding.rootLayout.snackbar("${user?.name} is logged in")
     }
 
     override fun onFailure(message: String) {
         binding.progressBar.hide()
-        toast(message)
+        binding.rootLayout.snackbar(message)
+
     }
 }
