@@ -24,6 +24,5 @@ fun View.snackbar(message: String) {
     Snackbar.make(this, message, Snackbar.LENGTH_LONG).also { snack ->
         snack.setAction("OK"){
             snack.dismiss()
-
     } }.show()
 }
